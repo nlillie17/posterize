@@ -9,32 +9,3 @@ Using k-means on pictures, popular pixel colors are used for clustering. For ins
 I have attached some cool transformations below.
 
 
-
-# choose k (the number of means) in  NUM_MEANS
-# and cluster the pixel intensities
-NUM_MEANS = 9
-clusters = KMeans(n_clusters = NUM_MEANS)
-clusters.fit(image_pixels)
-
-def posterized():
-	""" The goal of this program is to posterize (get rid of gradual changes) a picture """
-	new_image = image.copy()
-	num_rows, num_cols, num_chans = new_image.shape
-	for row in range(num_rows):
-		for col in range(num_cols):
-			r0,g0,b0 = image[row,col]
-			min_dist = 1000000
-			for center in clusters.cluster_centers_:
-				r1,g1,b1 = center
-				#find distance from pixel to each center
-				dist = math.sqrt((r0-r1)**2 + (g0-g1)**2 + (b0-b1)**2)
-
-				#set pixel equal to center color that is closest
-				if min_dist > dist:
-					min_dist = dist
-					new_image[row,col] = center
-			
-	plt.figure()
-	plt.axis("off")
-	plt.imshow(new_image)
-	return new_image
